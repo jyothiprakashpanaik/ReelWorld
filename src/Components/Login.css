@@ -1,0 +1,55 @@
+.logInWarapper{
+    display: flex;
+    justify-content: center;
+}
+
+.logInCard{
+    width: 30vw;
+    margin-top: 3%;
+}
+
+.insta-logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 3%;
+}
+
+.termsAndConditionsBlock{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.forgetPassword{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+}
+
+@media only screen and (max-width: 620px){
+    .logInCard{
+        width: 60%;
+    }
+    .insta-logo img{
+        width: 35%;
+    }
+}
+
+.imageCard{
+    height: 590px;
+    width: 440px;
+    margin-top: 3%;
+    position: relative;
+}
+
+.carouselCard{
+    position: absolute;
+    width: 234px;
+    height: 508px;
+    left: 149px;
+    top: 26px;
+}
