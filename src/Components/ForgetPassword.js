@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState,useContext } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { makeStyles } from '@mui/styles';
@@ -8,10 +9,8 @@ import "./Signup.css";
 import insta from "../Assets/instagram-text.png";
 import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
-import Checkbox from '@mui/material/Checkbox';
 import { Link } from "react-router-dom";
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-
+import { AuthContext } from '../Context/AuthContext';
 
 export default function ForgetPassword() {
 
@@ -26,6 +25,39 @@ export default function ForgetPassword() {
         },
     });
 
+    const [email, setEmail] = useState();
+    const [code, setCode] = useState();
+    const [password, setPassword] = useState();
+    const [error, setError] = useState();
+    const [loading, setLoading] = useState(false);
+    const {password_reset} = useContext(AuthContext);
+
+    const handlePassword = (e) => {
+        setPassword(e.target.value);
+    }
+    const handleEmail = (e) => {
+        setEmail(e.target.value);
+    }
+    const handleCode = (e) => {
+        setCode(e.target.value);
+    }
+
+    const handleClick = async (e) => {
+        try{
+            setLoading(true);
+            const userObj = await password_reset(email);
+            console.log(userObj);
+        }
+        catch(error){
+            setError(error.message);
+            setTimeout(() => {
+                setError('');
+            }, 5000);
+            setLoading(false);
+        }
+        
+    }
+
     const classes = useStyles();
 
     return (
@@ -37,13 +69,12 @@ export default function ForgetPassword() {
                         <Typography variant="subtitle1" className={classes.text1}>
                         Trouble logging in?
                         </Typography>
-                        {true && <Alert severity="error"></Alert>}
-                        <TextField id="outlined-basic" label="Email" type="email" margin="dense" fullWidth={true} variant="outlined" />
-                        <TextField id="outlined-basic" label="New Password" type="password" margin="dense" fullWidth={true} variant="outlined" />
+                        {error && <Alert severity="error">{error}</Alert>}
+                        <TextField id="outlined-basic" label="Email" type="email" margin="dense" fullWidth={true} variant="outlined" value={email} onChange={handleEmail} disabled={email}/>
                     </CardContent>
                     <CardActions>
-                        <Button fullWidth variant="contained" color="primary">
-                            Reset
+                        <Button fullWidth variant="contained" color="primary" onClick={handleClick} disabled={loading}>
+                            Send Activation link
                         </Button>
                     </CardActions>
                 </Card>

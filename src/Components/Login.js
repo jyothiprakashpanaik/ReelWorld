@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { Button, CardActions } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CarouselProvider, Slider, Slide, Image } from 'pure-react-carousel';
 import image1 from "../Assets/screenshot1.png";
 import image2 from "../Assets/screenshot2.png";
@@ -15,6 +15,9 @@ import insta from "../Assets/instagram-text.png";
 import backgroundImage from "../Assets/home-phones.png";
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import "./Login.css";
+import { useState, useContext } from "react";
+import { AuthContext } from '../Context/AuthContext';
+
 
 export default function LogIn() {
 
@@ -29,8 +32,39 @@ export default function LogIn() {
         }
     });
 
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
 
     const classes = useStyles();
+
+
+    const handleEmail = (e) => {
+        setEmail(e.target.value.trim());
+    }
+    const handlePassword = (e) => {
+        setPassword(e.target.value.trim());
+    }
+    const handleSubmit = async (e) => {
+        try{
+            setError('');
+            setLoading(true);
+            const userObj = await login(email, password);
+            setLoading(false);
+            navigate("/");
+        }
+        catch(error){
+            setError(error.message);
+            setTimeout(()=>{
+                setError("");
+            }, 5000);
+            setLoading(false);
+        }
+    }
+
 
     return (
         <div className='logInWarapper' >
@@ -61,12 +95,12 @@ export default function LogIn() {
                         <Typography variant="subtitle1" className={classes.text1}>
                             Login to see trenging photos and reels.
                         </Typography>
-                        {true && <Alert severity="error"></Alert>}
-                        <TextField id="outlined-basic" label="Email" type="email" margin="dense" fullWidth={true} variant="outlined" />
-                        <TextField id="outlined-basic" label="Password" type="password" margin="dense" fullWidth={true} variant="outlined" />
+                        {error && <Alert severity="error">{error}</Alert>}
+                        <TextField id="outlined-basic" label="Email" type="email" margin="dense" fullWidth={true} variant="outlined" value={email} onChange={handleEmail}/>
+                        <TextField id="outlined-basic" label="Password" type="password" margin="dense" fullWidth={true} variant="outlined" value={password} onChange={handlePassword}/>
                     </CardContent>
                     <CardActions>
-                        <Button fullWidth variant="contained" color="primary">
+                        <Button fullWidth variant="contained" color="primary" onClick={handleSubmit} disabled={loading}>
                             Login
                         </Button>
                     </CardActions>
