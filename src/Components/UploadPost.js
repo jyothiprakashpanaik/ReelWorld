@@ -9,20 +9,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { storage } from '../firebase';
 
 
-function UploadPost() {
+function UploadPost({userData}) {
     const [error, setError] = useState();
     const [loading, setLoading] = useState(false);
     const [uploaded, setUploaded] = useState(false);
-    const [userData, setUserData] = useState();
-
-    const { user } = useContext(AuthContext);
-
-    useEffect(()=>{
-        const unsub = database.users.doc(user.uid).onSnapshot((snapshot)=>{
-            setUserData(snapshot.data());
-        })
-        return ()=> {unsub();}
-    }, [user]);
 
     const handleFile = async (e) => {
         const file = e.target.files[0];
@@ -69,12 +59,13 @@ function UploadPost() {
                         likes: [],
                         comments: [],
                         postId: uid,
-                        uersId: userData.userId,
+                        postUrl: url,
+                        userId: userData.userId,
                         userProfile: userData.profileUrl,
                         userName: userData.fullname,
                         createdAt: database.getTimeStamp
                     }).then((ref) => {
-                        database.users.doc(user.uid).update({
+                        database.users.doc(userData.userId).update({
                             postIds: userData.postIds?[...userData.postIds, ref.id]:[ref.id]
                         }).then(() => {
                             setLoading(false);

@@ -1,0 +1,12 @@
+.videoContainer{
+    height: 80vh;
+    width: 100%;
+    background-color: white;
+    overflow: scroll;
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+}
+
+.videoContainer::-webkit-scrollbar{
+    display: none;
+}
