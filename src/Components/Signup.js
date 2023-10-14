@@ -81,7 +81,7 @@ export default function SignUp() {
                         userId: uid,
                         fullname: name,
                         profileUrl: url,
-                        createdAt: database.getTimeStamp()
+                        createdAt: database.getTimeStamp
                     })
                 })
                 setLoading(false);

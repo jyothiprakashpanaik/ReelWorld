@@ -5,6 +5,5 @@ import { useContext } from "react";
 
 export default function PrivateRoute() {
     const { user } = useContext(AuthContext);
-    console.log(user);
     return  (user ? <Outlet /> : <Navigate to="login" />);
 }

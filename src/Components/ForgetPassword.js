@@ -26,20 +26,12 @@ export default function ForgetPassword() {
     });
 
     const [email, setEmail] = useState();
-    const [code, setCode] = useState();
-    const [password, setPassword] = useState();
     const [error, setError] = useState();
     const [loading, setLoading] = useState(false);
     const {password_reset} = useContext(AuthContext);
 
-    const handlePassword = (e) => {
-        setPassword(e.target.value);
-    }
     const handleEmail = (e) => {
         setEmail(e.target.value);
-    }
-    const handleCode = (e) => {
-        setCode(e.target.value);
     }
 
     const handleClick = async (e) => {
