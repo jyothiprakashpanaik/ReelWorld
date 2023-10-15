@@ -10,3 +10,36 @@
 .videoContainer::-webkit-scrollbar{
     display: none;
 }
+
+.faAvatar{
+    position: absolute;
+    bottom: 9vh;
+    left: 2vw;
+    cursor: pointer;
+    padding: 0 5px 0 7px;
+}
+
+.faAvatar h4{
+    margin: 0;
+    color: white;
+    margin-top: 2%;
+    margin-left: 2%;
+    width: 100%;
+}
+
+.videos{
+    position: relative;
+}
+
+/* .faAvatar:hover{
+    background-color: #673ab7;
+    border-radius: 20px;
+} */
+
+.likeIcon{
+    position: absolute;
+    bottom: 4vh;
+    left: 2vw;
+    cursor: pointer;
+    padding: 0 5px 0 7px;
+}

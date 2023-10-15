@@ -3,4 +3,5 @@
     width: 100%;
     scroll-snap-align: start;
     border-radius: 20px;
+    background-color: black;
 }

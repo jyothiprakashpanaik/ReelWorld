@@ -1,6 +1,6 @@
 import React from 'react'
 import "./Video.css";
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
 
 
 function Video({postUrl, ...props}) {
@@ -19,9 +19,8 @@ function Video({postUrl, ...props}) {
         }
     }
     
-
   return (
-    <video src={postUrl} onEnded={handleScroll} className='videoContent' muted={true} onClick={handleClick} controls={true}></video>
+    <video src={postUrl} onEnded={handleScroll} className='videoContent' muted={true} onClick={handleClick}></video>
   )
 }
 

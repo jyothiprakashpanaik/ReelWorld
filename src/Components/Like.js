@@ -1,0 +1,40 @@
+import React, { useEffect, useState } from 'react'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { database } from '../firebase';
+
+function Like({postData, userDetails}) {
+    const [like, setLike] = useState();
+    const [unlike, setUnlike] = useState();
+
+    useEffect(()=>{
+        let check = postData.likes.includes(userDetails.userId)?true:false;
+        setLike(check);
+    }, [postData]);
+
+    const handleLike = () => {
+        if(like===true){
+            let newLikes = postData.likes.filter(userId => userId!=userDetails.userId);
+            database.posts.doc(postData.postId).update({
+                likes: newLikes
+            });
+        }
+        else{
+            let newLikes = postData.likes.concat([userDetails.userId]);
+            database.posts.doc(postData.postId).update({
+                likes: newLikes
+            });
+        }
+    }
+    
+
+    return (
+        <div>{
+        like!=null?
+            like? <FavoriteIcon className='likeIcon' id="like" style={{color:"red"}} onClick={handleLike}/>:<FavoriteBorderIcon className='likeIcon unlike' style={{color:"red"}} onClick={handleLike}/>
+           : <></>
+        }</div>
+    )
+}
+
+export default Like
