@@ -5,6 +5,7 @@ import UploadPost from "./UploadPost";
 import Posts from "./Posts";
 import { database } from "../firebase";
 
+
 export default function Feed() {
 
     const [userData, setUserData] = useState();

@@ -5,6 +5,12 @@
     overflow: scroll;
     scroll-snap-type: y mandatory;
     scrollbar-width: none;
+
+    -webkit-box-shadow: 0px 0px 26px -4px rgba(0, 0, 0, 1);
+    -moz-box-shadow: 0px 0px 26px -4px rgba(0, 0, 0, 1);
+    box-shadow: 0px 0px 26px -4px rgba(0, 0, 0, 1);
+
+    border-radius: 5px;
 }
 
 .videoContainer::-webkit-scrollbar{
@@ -14,7 +20,7 @@
 .faAvatar{
     position: absolute;
     bottom: 9vh;
-    left: 2vw;
+    left: 1vw;
     cursor: pointer;
     padding: 0 5px 0 7px;
 }
@@ -36,10 +42,68 @@
     border-radius: 20px;
 } */
 
+
+.likeAndComment{
+    position: absolute;
+    bottom: 4vh;
+    left: 1vw;
+    cursor: pointer;
+    width: 40%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
 .likeIcon{
+    color: white;
+}
+.commentIcon{
+    color: white;
+}
+/* .likeIcon{
     position: absolute;
     bottom: 4vh;
     left: 2vw;
     cursor: pointer;
     padding: 0 5px 0 7px;
+}
+
+.commentIcon{
+    position: absolute;
+    bottom: 4vh;
+    left: 4vw;
+    cursor: pointer;
+    padding: 0 5px 0 7px;
+    color: white;
+} */
+
+.modalContainer{
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.videoContainer1{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.modalVedio{
+    height: 100%;
+    width: 100%;
+}
+
+.modalVedio .videoContent{
+    height: 85vh;
+}
+
+.commentContainer{
+    width: 50%;
+    height: 100%;
+}
+
+.commentContainer .likeIcon{
+    color: black;
 }

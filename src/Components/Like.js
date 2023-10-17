@@ -31,7 +31,7 @@ function Like({postData, userDetails}) {
     return (
         <div>{
         like!=null?
-            like? <FavoriteIcon className='likeIcon' id="like" style={{color:"red"}} onClick={handleLike}/>:<FavoriteBorderIcon className='likeIcon unlike' style={{color:"red"}} onClick={handleLike}/>
+            like? <FavoriteIcon className='likeIcon' id="like" onClick={handleLike}/>:<FavoriteBorderIcon className='likeIcon unlike' onClick={handleLike}/>
            : <></>
         }</div>
     )
