@@ -14,8 +14,10 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
-import Slide from '@mui/material/Slide';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import AddComment from './AddComment';
+import Like2 from './Like2';
+import Comments from './Comments';
 
 
 
@@ -53,7 +55,7 @@ function Posts({ userData }) {
                 {posts.map((post, index) => (
                     <React.Fragment key={index}>
                         <div className="videos">
-                            <Video postUrl={post.postUrl}/>
+                            <Video postUrl={post.postUrl} />
                             <div className='collection' style={{ display: "flex" }}>
                                 <div className='faAvatar' style={{ display: "flex", justifyContent: "flex-end" }} >
                                     <Avatar className='avatar' src={post.userProfile} />
@@ -75,41 +77,19 @@ function Posts({ userData }) {
                                     <div className='modalContainer'>
                                         <div className='videoContainer1'>
                                             <div className="modalVedio">
-                                                <Video postUrl={post.postUrl} />
+                                                <video src={post.postUrl} />
                                             </div>
                                         </div>
                                         <div className='commentContainer'>
-                                            <Card sx={{ maxWidth: 345 }}>
-                                                <CardActionArea>
-                                                    <CardMedia
-                                                        component="img"
-                                                        height="140"
-                                                        image="/static/images/cards/contemplative-reptile.jpg"
-                                                        alt="green iguana"
-                                                    />
-                                                    <CardContent>
-                                                        <Typography gutterBottom variant="h5" component="div">
-                                                            Lizard
-                                                        </Typography>
-                                                        <Typography variant="body2" color="text.secondary">
-                                                            Lizards are a widespread group of squamate reptiles, with over 6,000
-                                                            species, ranging across all continents except Antarctica
-                                                        </Typography>
-                                                    </CardContent>
-                                                </CardActionArea>
-                                                <CardActions>
-                                                    <Button size="small" color="primary">
-                                                        Share
-                                                    </Button>
-                                                </CardActions>
+                                            <Card style={{height:"70vh"}}>
+                                                <Comments postData={post}/>
                                             </Card>
 
-                                            <Card variant='outlier'>
-{/* {console.log(post)} */}
-
-                                                <Typography>{`Liked by ${post.likes.length} users`}</Typography>
-                                                <div style={{display:"flex"}} >
-                                                    <Like postData={post} userDetails={userData}/>   
+                                            <Card variant="outlined" className='card2'>
+                                                <Typography style={{textAlign:"center"}}>{`Liked by ${post.likes.length} users`}</Typography>
+                                                <div className="likeComment" style={{display:"flex",padding:"0.5rem 0", alignItems:"center"}}>
+                                                    <Like2 postData={post} userDetails={userData} style={{display:"flex", alignItems:"center", justifyContent: "center"}}/>
+                                                    <AddComment postData={post} userDetails={userData}/>
                                                 </div>
                                             </Card>
 

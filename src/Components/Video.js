@@ -20,7 +20,7 @@ function Video({ postUrl, ...props }) {
   }
 
   return (
-    <video src={postUrl} onEnded={handleScroll} className='videoContent' muted={true} onClick={handleClick} autoPlay={true} controls></video>
+    <video src={postUrl} onEnded={handleScroll} className='videoContent' muted={true} onClick={handleClick} autoPlay={false} controls></video>
   )
 }
 

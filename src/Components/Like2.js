@@ -3,7 +3,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { database } from '../firebase';
 
-function Like({postData, userDetails}) {
+function Like2({postData, userDetails}) {
     const [like, setLike] = useState();
     const [unlike, setUnlike] = useState();
 
@@ -31,10 +31,10 @@ function Like({postData, userDetails}) {
     return (
         <div>{
         like!=null?
-            like? <FavoriteIcon className='likeIcon like' onClick={handleLike} style={{color:"red"}}/>:<FavoriteBorderIcon className='likeIcon unlike' onClick={handleLike}/>
+            like? <FavoriteIcon className='likeIcon like' onClick={handleLike} style={{color:"red", padding:"0 0.25rem"}}/>:<FavoriteBorderIcon className='likeIcon unlike' onClick={handleLike} style={{padding:"0 0.25rem"}}/>
            : <></>
         }</div>
     )
 }
 
-export default Like
+export default Like2

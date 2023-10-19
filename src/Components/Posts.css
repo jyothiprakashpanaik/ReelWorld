@@ -60,6 +60,10 @@
 .commentIcon{
     color: white;
 }
+
+.like{
+    color: red;
+}
 /* .likeIcon{
     position: absolute;
     bottom: 4vh;
@@ -93,10 +97,13 @@
 .modalVedio{
     height: 100%;
     width: 100%;
+    background-color: black;
 }
 
-.modalVedio .videoContent{
+.modalVedio video{
     height: 85vh;
+    width: 100%;
+    overflow: hidden;
 }
 
 .commentContainer{
@@ -106,4 +113,7 @@
 
 .commentContainer .likeIcon{
     color: black;
+}
+.like-comment-more-container > * {
+    cursor: pointer;
 }
