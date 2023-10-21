@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import { TextField } from '@mui/material';
 import { database } from '../firebase';
+import { v4 as uuidv4 } from 'uuid';
 
 function AddComment({userDetails, postData}) {
     const [text, setText] = useState('');
@@ -11,16 +12,17 @@ function AddComment({userDetails, postData}) {
     }
 
     const handleClick = () => {
-        
+        const uid = uuidv4();
         let obj = {
             comment: text,
             userProfileImage: userDetails.profileUrl,
             userName: userDetails.fullname,
             userId: userDetails.userId,
+            commentId: uid
         }
-        database.comments.add(obj).then((doc)=>{
+        database.comments.doc(uid).set(obj).then((doc)=>{
             database.posts.doc(postData.postId).update({
-                comments: [...postData.comments, doc.id]
+                comments: [...postData.comments, uid]
             })
         })
         setText('')
