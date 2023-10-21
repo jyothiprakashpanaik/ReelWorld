@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { database } from '../firebase';
 import CircularProgress from '@mui/material/CircularProgress';
-import Video from './Video';
-import "./Posts.css";
 import Avatar from '@mui/material/Avatar';
 import CommentIcon from '@mui/icons-material/Comment';
-import Like from './Like';
 import Dialog from '@mui/material/Dialog';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Like from './Like';
+import Video from './Video';
 import AddComment from './AddComment';
 import Like2 from './Like2';
 import Comments from './Comments';
+import "./Posts.css";
 
 
 

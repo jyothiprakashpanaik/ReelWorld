@@ -55,7 +55,7 @@ function UploadPost({userData}) {
                 uploadTask.snapshot.ref.getDownloadURL().then(async (url) => {
                     console.log("URL", url);
                     console.log(userData);
-                    database.posts.add({
+                    database.posts.doc(uid).set({
                         likes: [],
                         comments: [],
                         postId: uid,
