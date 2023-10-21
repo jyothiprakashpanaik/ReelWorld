@@ -7,31 +7,35 @@ function Comments({ postData }) {
     const [comments, setComments] = useState();
 
     useEffect(() => {
-        async function fetchComments() {
-            let data = [];
+        console.log("[RUNNING USEEFFECT]");
+
+        const fetchData = async () => {
+            let data = []
             for (let i = 0; i < postData.comments.length; i++) {
-                let doc = await database.comments.doc(postData.comments[i]).get();
+                const doc = await database.comments.doc(postData.comments[i]).get();
+
                 data.push(doc.data());
             }
             setComments(data);
-        }
+        };
 
-        fetchComments();
+        fetchData();
 
     }, [postData]);
+
+
+
+    console.log("[RE RENDER]");
 
     return (
         <div>{
             !comments ? <CircularProgress /> :
                 <>
                     {
-                        comments.map((comment) => {
-                            return (<div style={{display: "flex", border: "1px solid black", margin: "3px", borderRadius: "5px",flexDirection:"column" }}>
-                                <div style={{ display: "flex", alignItems: "center" }}>
+                        comments.map((comment, index) => {
+                            return (<div key={index} style={{ display: "flex", alignItems: "flex-start" }}>
                                 <Avatar src={comment.userProfileImage} style={{ margin: "0.25rem", cursor: "pointer" }} />
-                                <Typography variant="subtitle1" style={{ margin: "0.25rem", cursor: "pointer" }}>{comment.userName}</Typography>
-                            </div>
-                                <Typography variant='subtitle2' style={{ margin: "0.25rem", borderRadius:"2px", background:"gray"}}><span style={{padding:"10px"}}>{comment.comment}</span></Typography>
+                                <p style={{ overflowWrap: "break-word", overflow: "auto" }}><span style={{ fontWeight: "bold" }}>{comment.userName}</span>&nbsp;{comment.comment}</p>
                             </div>)
                         })
                     }

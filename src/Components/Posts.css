@@ -117,3 +117,7 @@
 .like-comment-more-container > * {
     cursor: pointer;
 }
+
+.card1::-webkit-scrollbar {
+    display: none;
+}

@@ -18,6 +18,7 @@ function App() {
           <Route exact path="/" element={<PrivateRoute/>}>
             <Route exact path="/" element={<Feed/>}/>
           </Route>
+          {/* <Route path="/profile/:id" element={}/> */}
         </Routes>
       </AuthProvider>
     </BrowserRouter>

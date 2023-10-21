@@ -10,10 +10,7 @@ import Dialog from '@mui/material/Dialog';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import AddComment from './AddComment';
 import Like2 from './Like2';
@@ -24,6 +21,7 @@ import Comments from './Comments';
 function Posts({ userData }) {
     const [posts, setPosts] = useState();
     const [open, setOpen] = useState(null);
+
 
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -44,7 +42,6 @@ function Posts({ userData }) {
                 data.push({ ...doc.data(), postId: doc.id });
             });
             setPosts(data);
-            // console.log(data);
         })
         return () => { unsub(); }
     }, [])
@@ -81,15 +78,15 @@ function Posts({ userData }) {
                                             </div>
                                         </div>
                                         <div className='commentContainer'>
-                                            <Card style={{height:"70vh"}}>
-                                                <Comments postData={post}/>
+                                            <Card className='card1' style={{ height: "70vh", overflowY: "scroll", scrollSnapType:"y mandatory", scrollbarWidth:"none"}}>
+                                                <Comments postData={post} />
                                             </Card>
 
                                             <Card variant="outlined" className='card2'>
-                                                <Typography style={{textAlign:"center"}}>{`Liked by ${post.likes.length} users`}</Typography>
-                                                <div className="likeComment" style={{display:"flex",padding:"0.5rem 0", alignItems:"center"}}>
-                                                    <Like2 postData={post} userDetails={userData} style={{display:"flex", alignItems:"center", justifyContent: "center"}}/>
-                                                    <AddComment postData={post} userDetails={userData}/>
+                                                <Typography style={{ textAlign: "center" }}>{`Liked by ${post.likes.length} users`}</Typography>
+                                                <div className="likeComment" style={{ display: "flex", padding: "0.5rem 0", alignItems: "center" }}>
+                                                    <Like2 postData={post} userDetails={userData} style={{ display: "flex", alignItems: "center", justifyContent: "center" }} />
+                                                    <AddComment postData={post} userDetails={userData} />
                                                 </div>
                                             </Card>
 
