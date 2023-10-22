@@ -1,4 +1,4 @@
-import react, {useState} from 'react';
+import react, {useContext, useState} from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -18,6 +18,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../Context/AuthContext';
 
 export default function Navbar({userData}) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -27,6 +28,7 @@ export default function Navbar({userData}) {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const navigate = useNavigate();
+  const {logout} = useContext(AuthContext);
 
   const handleProfile = () => {
     navigate(`/profile/${userData.userId}`)
@@ -36,8 +38,9 @@ export default function Navbar({userData}) {
 
   }
 
-  const handleLogout = () => {
-
+  const handleLogout = async () => {
+    await logout();
+    navigate(`/login`);
   }
 
   const handleProfileMenuOpen = (event) => {
@@ -129,6 +132,9 @@ export default function Navbar({userData}) {
         </IconButton>
         <p>Profile</p>
       </MenuItem>
+      {/* <MenuItem onClick={handleProfile}><AccountCircleIcon/>Profile</MenuItem>
+      <MenuItem onClick={handleMyAccount}><ManageAccountsIcon/>My account</MenuItem>
+      <MenuItem onClick={handleLogout}><LogoutIcon/>Logout</MenuItem> */}
     </Menu>
   );
 

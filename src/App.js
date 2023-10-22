@@ -6,6 +6,7 @@ import ForgetPassword from './Components/ForgetPassword';
 import { AuthProvider } from './Context/AuthContext';
 import Feed from './Components/Feed';
 import PrivateRoute from './Components/PrivateRoute';
+import Profile from './Components/Profile';
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
           <Route exact path="/" element={<PrivateRoute/>}>
             <Route exact path="/" element={<Feed/>}/>
           </Route>
-          {/* <Route path="/profile/:id" element={}/> */}
+          <Route path="/profile/:id" element={<Profile/>}/>
         </Routes>
       </AuthProvider>
     </BrowserRouter>
