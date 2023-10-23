@@ -16,10 +16,13 @@ function App() {
           <Route path="/login" element={<LogIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgetpassword" element={<ForgetPassword />} />
-          <Route exact path="/" element={<PrivateRoute/>}>
-            <Route exact path="/" element={<Feed/>}/>
+
+          <Route exact path="/profile/:id" element={<PrivateRoute />}>
+            <Route path="/profile/:id" element={<Profile />} />
           </Route>
-          <Route path="/profile/:id" element={<Profile/>}/>
+          <Route exact path="/" element={<PrivateRoute />}>
+            <Route exact path="/" element={<Feed />} />
+          </Route>
         </Routes>
       </AuthProvider>
     </BrowserRouter>

@@ -3,6 +3,7 @@ import { database } from '../firebase';
 import CircularProgress from '@mui/material/CircularProgress';
 import Avatar from '@mui/material/Avatar';
 import CommentIcon from '@mui/icons-material/Comment';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Dialog from '@mui/material/Dialog';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
@@ -21,9 +22,11 @@ import "./Posts.css";
 function Posts({ userData }) {
     const [posts, setPosts] = useState();
     const [open, setOpen] = useState(null);
-    const [pause, setPause] = useState({pause:null, play:null});
+    const [isAlertOpen, setAlertOpen] = useState(false);
+
     const videoRefs = useRef({});
 
+    console.log(videoRefs);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -38,6 +41,21 @@ function Posts({ userData }) {
         setOpen(null);
     };
 
+
+    const handleDelete = (id) => {
+        let response = alert('This is a simple alert.');
+        console.log(response);
+        if (response === true) {
+            database.posts.doc(id).delete().then(() => {
+                console.log(`Document ${id} removed successfully.`);
+            })
+            let newPosts = posts.filter((post) => {
+                return post.postId === id;
+            });
+
+            setPosts(newPosts);
+        }
+    }
 
     useEffect(() => {
         const unsub = database.posts.orderBy("createdAt", "desc").onSnapshot((querySnapshot) => {
@@ -57,7 +75,7 @@ function Posts({ userData }) {
                 {posts.map((post, index) => (
                     <React.Fragment key={index}>
                         <div className="videos">
-                            <Video postUrl={post.postUrl} ref={(ref) => (videoRefs.current[index] = ref)} currentId={index}/>
+                            <Video postUrl={post.postUrl} ref={(ref) => (videoRefs.current[index] = ref)} currentId={index} />
                             <div className='collection' style={{ display: "flex" }}>
                                 <div className='faAvatar' style={{ display: "flex", justifyContent: "flex-end" }} >
                                     <Avatar className='avatar' src={post.userProfile} />
@@ -66,12 +84,12 @@ function Posts({ userData }) {
                                 <div className='likeAndComment'>
                                     <Like postData={post} userDetails={userData} />
                                     <CommentIcon className='commentIcon' onClick={() => handleClickOpen(index)} />
-                                    <MoreHorizIcon style={{ color: "white" }} />
+                                    {/* {userData.userId === post.userId && <DeleteIcon style={{ color: "white" }} onClick={() => handleDelete(post.postId)} />} */}
                                 </div>
                                 {open === index ? <Dialog
                                     fullScreen={fullScreen}
-                                    open={!!(open+1)}
-                                    onClose={()=>{handleClose(index)}}
+                                    open={!!(open + 1)}
+                                    onClose={() => { handleClose(index) }}
                                     aria-labelledby="responsive-dialog-title"
                                     fullWidth={true}
                                     maxWidth='md'
@@ -79,11 +97,11 @@ function Posts({ userData }) {
                                     <div className='modalContainer'>
                                         <div className='videoContainer1'>
                                             <div className="modalVedio">
-                                                <video src={post.postUrl} autoPlay={true} controls/>
+                                                <video src={post.postUrl} autoPlay={true} controls />
                                             </div>
                                         </div>
                                         <div className='commentContainer'>
-                                            <Card className='card1' style={{ height: "70vh", overflowY: "scroll", scrollSnapType:"y mandatory", scrollbarWidth:"none"}}>
+                                            <Card className='card1' style={{ height: "70vh", overflowY: "scroll", scrollSnapType: "y mandatory", scrollbarWidth: "none" }}>
                                                 <Comments postData={post} />
                                             </Card>
                                             <Card variant="outlined" className='card2'>

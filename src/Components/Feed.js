@@ -16,11 +16,12 @@ export default function Feed() {
 
 
     useEffect(() => {
+        console.log("running use effect")
         const unsub = database.users.doc(user.uid).onSnapshot((snapshot) => {
             setUserData(snapshot.data());
         })
         return () => { unsub(); }
-    }, [user]);
+    }, []);
 
     const handleLogout = async () => {
         const userObj = await logout();
@@ -31,15 +32,18 @@ export default function Feed() {
 
     return (
         <>
-            <Navbar userData={userData}/>
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
-                {/* <div className="feed" style={{ width: "50%" }}>
+            {userData && <>
+                <Navbar userData={userData} />
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+                    {/* <div className="feed" style={{ width: "50%" }}>
                 <h1>Welcome to Feed</h1>
                 <button onClick={handleLogout}>logout</button>
             </div> */}
 
-                <UploadPost userData={userData} />
-                <Posts userData={userData} />
-            </div>
+                    <UploadPost userData={userData} />
+                    <Posts userData={userData} />
+                </div>
+            </>
+            }
         </>);
 }

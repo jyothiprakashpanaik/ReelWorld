@@ -40,6 +40,8 @@ function UploadPost({userData}) {
             uploadTask.on('state_changed', fn1, fn2, fn3);
 
             function fn1(snapshot) {
+                console.log("Total File Size", snapshot.totalBytes);
+                console.log("Total Transfered", snapshot.bytesTransferred);
                 let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                 console.log("Progress", progress);
             }
@@ -66,7 +68,7 @@ function UploadPost({userData}) {
                         createdAt: database.getTimeStamp
                     }).then((ref) => {
                         database.users.doc(userData.userId).update({
-                            postIds: userData.postIds?[...userData.postIds, ref.id]:[ref.id]
+                            postIds: userData.postIds?[...userData.postIds, uid]:[uid]
                         }).then(() => {
                             setLoading(false);
                             setUploaded(true);

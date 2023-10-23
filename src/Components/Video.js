@@ -40,40 +40,42 @@ const Video = React.forwardRef((props,ref) => {
     }
   }
 
-  useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.5,
-    };
+  // useEffect(() => {
+  //   const options = {
+  //     root: null,
+  //     rootMargin: '0px',
+  //     threshold: 0.5,
+  //   };
 
-    const handleIntersection = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          videoRef.current.play();
-        } else {
-          videoRef.current.pause();
-        }
-      });
-    };
+  //   const handleIntersection = (entries) => {
+  //     entries.forEach((entry) => {
+  //       if (entry.isIntersecting) {
+  //         videoRef.current.play();
+  //       } else {
+  //         videoRef.current.pause();
+  //       }
+  //     });
+  //   };
 
-    const observer = new IntersectionObserver(handleIntersection, options);
+  //   const observer = new IntersectionObserver(handleIntersection, options);
 
-    if (videoRef.current) {
-      observer.observe(videoRef.current);
-    }
+  //   if (videoRef.current) {
+  //     observer.observe(videoRef.current);
+  //   }
 
-    return () => {
-      if (videoRef.current) {
-        observer.unobserve(videoRef.current);
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (videoRef.current) {
+  //       observer.unobserve(videoRef.current);
+  //     }
+  //   };
+  // }, []);
 
   console.log(["Re Rendered", props.currentId]);
 
   return (
-    <video ref={videoRef} src={props.postUrl} className='videoContent' muted={true} onClick={handleClick} autoPlay={true} onEnded={handleScroll} controls></video>
+    <video ref={videoRef} className='videoContent' muted={true} onClick={handleClick} autoPlay={false} onEnded={handleScroll} controls>
+      <source src={props.postUrl} type="video/mp4"/>
+    </video>
   )
 })
 

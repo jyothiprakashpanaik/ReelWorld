@@ -1,6 +1,6 @@
 .videoContent {
     height: 80vh;
-    width: 25vw;
+    width: 21vw;
     scroll-snap-align: start;
     border-radius: 5px;
     background-color: black;

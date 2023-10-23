@@ -19,6 +19,18 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Context/AuthContext';
+import { makeStyles } from '@mui/styles';
+import insta from "../Assets/instagram-text.png";
+import HomeIcon from '@mui/icons-material/Home';
+import { Avatar } from '@mui/material';
+
+
+const useStyles = makeStyles({
+  appBar: {
+    background: "white",
+    color:"black"
+  }
+})
 
 export default function Navbar({userData}) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -29,9 +41,14 @@ export default function Navbar({userData}) {
 
   const navigate = useNavigate();
   const {logout} = useContext(AuthContext);
+  const classes = useStyles();
 
   const handleProfile = () => {
     navigate(`/profile/${userData.userId}`)
+  }
+
+  const handleBannerClick = () => {
+    navigate(`/`)
   }
 
   const handleMyAccount = () => {
@@ -102,11 +119,9 @@ export default function Navbar({userData}) {
     >
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
+            <AccountCircleIcon />
         </IconButton>
-        <p>Messages</p>
+        <p>Profile</p>
       </MenuItem>
       <MenuItem>
         <IconButton
@@ -114,11 +129,9 @@ export default function Navbar({userData}) {
           aria-label="show 17 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
+            <ManageAccountsIcon />
         </IconButton>
-        <p>Notifications</p>
+        <p>My account</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -128,52 +141,43 @@ export default function Navbar({userData}) {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <LogoutIcon />
         </IconButton>
-        <p>Profile</p>
+        <p>Logout</p>
       </MenuItem>
-      {/* <MenuItem onClick={handleProfile}><AccountCircleIcon/>Profile</MenuItem>
-      <MenuItem onClick={handleMyAccount}><ManageAccountsIcon/>My account</MenuItem>
-      <MenuItem onClick={handleLogout}><LogoutIcon/>Logout</MenuItem> */}
     </Menu>
   );
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.appBar} style={{background:"white", color:"black"}}>
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            MUI
-          </Typography>
+          <div className=''>
+            <img src={insta} onClick={handleBannerClick} style={{height:"5vh", width:"100%", cursor:"pointer"}}></img>
+          </div>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
+          <IconButton
+              size="large"
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleBannerClick}
+              color="inherit"
+            >
+              <HomeIcon />
             </IconButton>
             <IconButton
               size="large"
-              aria-label="show 17 new notifications"
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              
               color="inherit"
             >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
+              <ManageAccountsIcon />
             </IconButton>
             <IconButton
               size="large"
@@ -184,7 +188,9 @@ export default function Navbar({userData}) {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              {/* <AccountCircle /> */}
+              {console.log(userData)}
+              <Avatar src={userData.profileUrl} sx={{ width: 24, height: 24 }}/>
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
