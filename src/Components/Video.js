@@ -1,10 +1,31 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState, useImperativeHandle } from 'react'
 import "./Video.css";
 import ReactDOM from 'react-dom';
 
 
-function Video({ postUrl, ...props }) {
 
+const Video = React.forwardRef((props,ref) => {
+
+  useImperativeHandle(ref, ()=>{
+    return {pause: handleVideo, currentTime: getCurrentTime}
+  });
+
+  const videoRef = useRef(null);
+
+  function handleVideo() {
+    console.log("Before Is Paused:",videoRef.current.paused, props.currentId);
+    if(videoRef.current.paused===false){
+      videoRef.current.pause();
+    }
+    else{
+      videoRef.current.play();
+    }
+    console.log("After Is Paused:",videoRef.current.paused);
+  }
+
+  function getCurrentTime(){
+    return videoRef.current.currentTime;
+  }
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -13,15 +34,47 @@ function Video({ postUrl, ...props }) {
 
   const handleScroll = (e) => {
     let next = ReactDOM.findDOMNode(e.target).parentElement.nextSibling;
-    
+
     if (next) {
       next.scrollIntoView()
     }
   }
 
-  return (
-    <video src={postUrl} onEnded={handleScroll} className='videoContent' muted={true} onClick={handleClick} autoPlay={false} controls></video>
-  )
-}
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5,
+    };
 
-export default Video
+    const handleIntersection = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          videoRef.current.play();
+        } else {
+          videoRef.current.pause();
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, options);
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => {
+      if (videoRef.current) {
+        observer.unobserve(videoRef.current);
+      }
+    };
+  }, []);
+
+  console.log(["Re Rendered", props.currentId]);
+
+  return (
+    <video ref={videoRef} src={props.postUrl} className='videoContent' muted={true} onClick={handleClick} autoPlay={true} onEnded={handleScroll} controls></video>
+  )
+})
+
+export default Video;

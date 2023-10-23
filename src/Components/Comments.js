@@ -7,7 +7,7 @@ function Comments({ postData }) {
     const [comments, setComments] = useState();
 
     useEffect(() => {
-        console.log("[RUNNING USEEFFECT]");
+        // console.log("[RUNNING USEEFFECT]");
 
         const fetchData = async () => {
             const fetchPromises = postData.comments.map(commentId =>
@@ -26,7 +26,7 @@ function Comments({ postData }) {
 
 
 
-    console.log("[RE RENDER]");
+    // console.log("[RE RENDER]");
 
     return (
         <div>{

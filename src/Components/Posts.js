@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { database } from '../firebase';
 import CircularProgress from '@mui/material/CircularProgress';
 import Avatar from '@mui/material/Avatar';
@@ -21,16 +21,20 @@ import "./Posts.css";
 function Posts({ userData }) {
     const [posts, setPosts] = useState();
     const [open, setOpen] = useState(null);
-
+    const [pause, setPause] = useState({pause:null, play:null});
+    const videoRefs = useRef({});
 
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     const handleClickOpen = (id) => {
+        videoRefs.current[id].pause();
         setOpen(id);
     };
 
-    const handleClose = () => {
+    const handleClose = (id) => {
+        console.log(videoRefs.current[id]);
+        videoRefs.current[id].pause();
         setOpen(null);
     };
 
@@ -42,6 +46,7 @@ function Posts({ userData }) {
                 data.push({ ...doc.data(), postId: doc.id });
             });
             setPosts(data);
+            console.log(data);
         })
         return () => { unsub(); }
     }, [])
@@ -52,7 +57,7 @@ function Posts({ userData }) {
                 {posts.map((post, index) => (
                     <React.Fragment key={index}>
                         <div className="videos">
-                            <Video postUrl={post.postUrl} />
+                            <Video postUrl={post.postUrl} ref={(ref) => (videoRefs.current[index] = ref)} currentId={index}/>
                             <div className='collection' style={{ display: "flex" }}>
                                 <div className='faAvatar' style={{ display: "flex", justifyContent: "flex-end" }} >
                                     <Avatar className='avatar' src={post.userProfile} />
@@ -60,13 +65,13 @@ function Posts({ userData }) {
                                 </div>
                                 <div className='likeAndComment'>
                                     <Like postData={post} userDetails={userData} />
-                                    <CommentIcon className='commentIcon' onClick={() => handleClickOpen(post.postId)} />
+                                    <CommentIcon className='commentIcon' onClick={() => handleClickOpen(index)} />
                                     <MoreHorizIcon style={{ color: "white" }} />
                                 </div>
-                                {open === post.postId ? <Dialog
+                                {open === index ? <Dialog
                                     fullScreen={fullScreen}
-                                    open={!!open}
-                                    onClose={handleClose}
+                                    open={!!(open+1)}
+                                    onClose={()=>{handleClose(index)}}
                                     aria-labelledby="responsive-dialog-title"
                                     fullWidth={true}
                                     maxWidth='md'
@@ -74,14 +79,13 @@ function Posts({ userData }) {
                                     <div className='modalContainer'>
                                         <div className='videoContainer1'>
                                             <div className="modalVedio">
-                                                <video src={post.postUrl} />
+                                                <video src={post.postUrl} autoPlay={true} controls/>
                                             </div>
                                         </div>
                                         <div className='commentContainer'>
                                             <Card className='card1' style={{ height: "70vh", overflowY: "scroll", scrollSnapType:"y mandatory", scrollbarWidth:"none"}}>
                                                 <Comments postData={post} />
                                             </Card>
-
                                             <Card variant="outlined" className='card2'>
                                                 <Typography style={{ textAlign: "center" }}>{`Liked by ${post.likes.length} users`}</Typography>
                                                 <div className="likeComment" style={{ display: "flex", padding: "0.5rem 0", alignItems: "center" }}>
