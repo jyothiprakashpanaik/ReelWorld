@@ -23,12 +23,15 @@ export default function Feed() {
         return () => { unsub(); }
     }, []);
 
-    const handleLogout = async () => {
-        const userObj = await logout();
-        console.log(userObj);
-        navigate("/login");
 
-    }
+
+
+    // const handleLogout = async () => {
+    //     const userObj = await logout();
+    //     console.log(userObj);
+    //     navigate("/login");
+
+    // }
 
     return (
         <>

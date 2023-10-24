@@ -36,7 +36,7 @@ const Video = React.forwardRef((props,ref) => {
     let next = ReactDOM.findDOMNode(e.target).parentElement.nextSibling;
 
     if (next) {
-      next.scrollIntoView()
+      next.scrollIntoView({ behavior: 'smooth' })
     }
   }
 
@@ -70,7 +70,7 @@ const Video = React.forwardRef((props,ref) => {
   //   };
   // }, []);
 
-  console.log(["Re Rendered", props.currentId]);
+  console.count(`Re Rendered ${props.currentId}`);
 
   return (
     <video ref={videoRef} className='videoContent' muted={true} onClick={handleClick} autoPlay={false} onEnded={handleScroll} controls>

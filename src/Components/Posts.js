@@ -22,7 +22,6 @@ import "./Posts.css";
 function Posts({ userData }) {
     const [posts, setPosts] = useState();
     const [open, setOpen] = useState(null);
-    const [isAlertOpen, setAlertOpen] = useState(false);
 
     const videoRefs = useRef({});
 
@@ -30,32 +29,46 @@ function Posts({ userData }) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
+
+    let options = { threshold: 0.6 };
+    let callback = (entries) => {
+        entries.forEach((entry) => {
+            // console.log(entry);
+            let ele = entry.target.childNodes[0];
+            ele.play().then(() => {
+                if (!ele.paused && !entry.isIntersecting) {
+                    ele.pause();
+                }
+            })
+        })
+    }
+    let observer = new IntersectionObserver(callback, options);
+
     const handleClickOpen = (id) => {
         videoRefs.current[id].pause();
         setOpen(id);
     };
 
     const handleClose = (id) => {
-        console.log(videoRefs.current[id]);
         videoRefs.current[id].pause();
         setOpen(null);
     };
 
 
-    const handleDelete = (id) => {
-        let response = alert('This is a simple alert.');
-        console.log(response);
-        if (response === true) {
-            database.posts.doc(id).delete().then(() => {
-                console.log(`Document ${id} removed successfully.`);
-            })
-            let newPosts = posts.filter((post) => {
-                return post.postId === id;
-            });
+    // const handleDelete = (id) => {
+    //     let response = alert('This is a simple alert.');
+    //     console.log(response);
+    //     if (response === true) {
+    //         database.posts.doc(id).delete().then(() => {
+    //             console.log(`Document ${id} removed successfully.`);
+    //         })
+    //         let newPosts = posts.filter((post) => {
+    //             return post.postId === id;
+    //         });
 
-            setPosts(newPosts);
-        }
-    }
+    //         setPosts(newPosts);
+    //     }
+    // }
 
     useEffect(() => {
         const unsub = database.posts.orderBy("createdAt", "desc").onSnapshot((querySnapshot) => {
@@ -67,7 +80,24 @@ function Posts({ userData }) {
             console.log(data);
         })
         return () => { unsub(); }
-    }, [])
+    }, []);
+
+
+    useEffect(() => {
+        let elements = document.querySelectorAll(".videos");
+
+        elements.forEach((element) => {
+            observer.observe(element);
+        });
+
+        return () => {
+            elements.forEach((element) => {
+                observer.unobserve(element);
+            });
+
+            observer.disconnect();
+        }
+    }, [posts]);
 
     return (
         <div>{

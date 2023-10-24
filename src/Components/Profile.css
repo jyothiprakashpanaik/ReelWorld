@@ -1,0 +1,44 @@
+.spacer{
+    min-height: 10vh;
+}
+
+.container{
+    min-height: 88vh;
+    margin-left: 18%;
+    margin-right: 18%;
+}
+
+.userCard{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profileImg{
+    flex-basis: 50%;
+    
+}
+
+.info{
+    flex-basis: 40%;
+}
+
+.profileImg img{
+    height: 8rem;
+    width: 8rem;
+    border-radius: 50%;
+    margin-left: 10%;
+}
+
+.divider{
+    margin-top: 10vh;
+}
+
+.userPostsCard{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.userPostsCard video{
+    margin: 2px;
+}
