@@ -136,10 +136,10 @@ Enjoy exploring and testing **ReelWorld**!
 
 ## Contributing
 
-We welcome contributions to improve and enhance **ReelWorld**. To contribute, please follow our [Contribution Guidelines](CONTRIBUTING.md).
+We welcome contributions to improve and enhance **ReelWorld**. To contribute, please follow our [Contribution Guidelines](https://github.com/github/docs/blob/main/CONTRIBUTING.md).
 
 ## License
 
-This project is licensed under the Apache-2.0 license. Please see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the Apache-2.0 license. Please see the [LICENSE.md](LICENSE) file for details.
 
 ---
