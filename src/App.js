@@ -7,6 +7,7 @@ import { AuthProvider } from './Context/AuthContext';
 import Feed from './Components/Feed';
 import PrivateRoute from './Components/PrivateRoute';
 import Profile from './Components/Profile';
+import ManageAccount from './Components/ManageAccount';
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
 
           <Route exact path="/profile/:id" element={<PrivateRoute />}>
             <Route path="/profile/:id" element={<Profile />} />
+          </Route>
+          <Route exact path="/manageaccount" element={<PrivateRoute />}>
+            <Route path="/manageaccount" element={<ManageAccount />} />
           </Route>
           <Route exact path="/" element={<PrivateRoute />}>
             <Route exact path="/" element={<Feed />} />
