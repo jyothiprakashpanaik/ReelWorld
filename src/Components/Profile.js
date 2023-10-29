@@ -11,6 +11,7 @@ import AddComment from './AddComment';
 import Like2 from './Like2';
 import Comments from './Comments';
 import Card from '@mui/material/Card';
+import Video from './Video';
 
 function Profile() {
     const [userData, setUserData] = useState();
@@ -88,7 +89,7 @@ function Profile() {
                             </div>
                             <div className="info">
                                 <Typography variant='h5'>
-                                    {userData.email}
+                                    {userData.fullname}
                                 </Typography>
                                 <Typography variant='h6'>
                                     {userData.postIds.length} Posts
@@ -100,9 +101,7 @@ function Profile() {
                             {
                                 posts.map((post, index) => (
                                     <div className='videoBox' key={index}>
-                                        <video className='videoContent' muted={true} autoPlay={false} controls onClick={() => handleClickOpen(index)}>
-                                            <source src={post.postUrl} type="video/mp4" />
-                                        </video>
+                                        <video className='videoContent' muted={true} controls={false} autoPlay={false} onClick={() => handleClickOpen(index)} src={post.postUrl} type="video/mp4"/>
                                         {open === index ? <Dialog
                                             fullScreen={fullScreen}
                                             open={!!(open + 1)}
@@ -114,7 +113,8 @@ function Profile() {
                                             <div className='modalContainer'>
                                                 <div className='videoContainer1'>
                                                     <div className="modalVedio">
-                                                        <video src={post.postUrl} autoPlay={true} controls />
+                                                        <Video postUrl={post.postUrl}/>
+                                                        {/* <video src={post.postUrl} autoPlay={false} controls /> */}
                                                     </div>
                                                 </div>
                                                 <div className='commentContainer'>
@@ -136,12 +136,10 @@ function Profile() {
                                     </div>
                                 ))
                             }
-
                         </div >
                     </div>
                 </>
             }
-
         </>
     )
 }
