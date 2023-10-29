@@ -1,5 +1,4 @@
-import react, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import UploadPost from "./UploadPost";
 import Posts from "./Posts";
@@ -11,8 +10,7 @@ export default function Feed() {
 
     const [userData, setUserData] = useState();
 
-    const navigate = useNavigate();
-    const { logout, user } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
 
     useEffect(() => {
@@ -23,25 +21,11 @@ export default function Feed() {
         return () => { unsub(); }
     }, []);
 
-
-
-
-    // const handleLogout = async () => {
-    //     const userObj = await logout();
-    //     console.log(userObj);
-    //     navigate("/login");
-
-    // }
-
     return (
         <>
             {userData && <>
                 <Navbar userData={userData} />
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
-                    {/* <div className="feed" style={{ width: "50%" }}>
-                <h1>Welcome to Feed</h1>
-                <button onClick={handleLogout}>logout</button>
-            </div> */}
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "90vh" }}>
 
                     <UploadPost userData={userData} />
                     <Posts userData={userData} />

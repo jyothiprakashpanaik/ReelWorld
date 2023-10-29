@@ -5,7 +5,6 @@ import { database } from '../firebase';
 
 function Like2({postData, userDetails}) {
     const [like, setLike] = useState();
-    const [unlike, setUnlike] = useState();
 
     useEffect(()=>{
         let check = postData.likes.includes(userDetails.userId)?true:false;
