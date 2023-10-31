@@ -8,15 +8,13 @@ function Comments({ postData }) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // console.log("[RUNNING USEEFFECT]");
-
         const fetchData = async () => {
             const fetchPromises = postData.comments.map(commentId =>
                 database.comments.doc(commentId).get()
             );
 
             const fetchedComments = await Promise.all(fetchPromises);
-    
+
             const newData = fetchedComments.map(doc => doc.data());
             setComments(newData);
         }
@@ -25,9 +23,9 @@ function Comments({ postData }) {
 
     }, [postData]);
 
-
-
-    // console.log("[RE RENDER]");
+    const handleProfile = (id) => {
+        navigate(`/profile/${id}`)
+    }
 
     return (
         <div>{
@@ -37,7 +35,9 @@ function Comments({ postData }) {
                         comments.map((comment, index) => {
                             return (<div key={index} style={{ display: "flex", alignItems: "flex-start" }}>
                                 <Avatar src={comment.userProfileImage} style={{ margin: "0.25rem", cursor: "pointer" }} />
-                                <p style={{ overflowWrap: "break-word", overflow: "auto", marginTop:"0"}}><span style={{ fontWeight: "bold" }} onClick={()=>navigate(`/profile/${comment.userId}`)}>{comment.userName}</span>&nbsp;{comment.comment}</p>
+                                <p style={{ overflowWrap: "break-word", overflow: "auto", marginTop: "0" }}>
+                                    <span style={{ fontWeight: "bold" }} onClick={()=>handleProfile(comment.userId)} >{comment.userName}</span>
+                                    &nbsp;{comment.comment}</p>
                             </div>)
                         })
                     }

@@ -11,11 +11,13 @@ import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 
+const allowedTypes = ["video/mp4"]
+
 function UploadPost({ userData }) {
     const [error, setError] = useState();
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = React.useState();
-    let allowedTypes = ["video/mp4"]
+    
 
     const handleFile = async (e) => {
         const file = e.target.files[0];

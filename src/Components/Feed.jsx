@@ -4,12 +4,12 @@ import UploadPost from "./UploadPost";
 import Posts from "./Posts";
 import { database } from "../firebase";
 import Navbar from "./Navbar";
+import SideNavBar from "./SideNavBar";
 
 
 export default function Feed() {
 
     const [userData, setUserData] = useState();
-
     const { user } = useContext(AuthContext);
 
 
@@ -23,10 +23,21 @@ export default function Feed() {
 
     return (
         <>
-            {userData && <>
+            {/* {userData && <>
                 <Navbar userData={userData} />
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "90vh" }}>
+                    <UploadPost userData={userData} />
+                    <Posts userData={userData} />
+                </div>
+            </>
+            } */}
 
+            {/* <SideNavBar/> */}
+            {/* <Posts userData={userData} /> */}
+
+            {userData && <>
+                <SideNavBar userData={userData}/>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "90vh" }}>
                     <UploadPost userData={userData} />
                     <Posts userData={userData} />
                 </div>
