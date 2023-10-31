@@ -181,7 +181,6 @@ export default function Navbar({userData}) {
               color="inherit"
             >
               {/* <AccountCircle /> */}
-              {console.log(userData)}
               <Avatar src={userData.profileUrl} sx={{ width: 24, height: 24 }}/>
             </IconButton>
           </Box>

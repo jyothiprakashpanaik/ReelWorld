@@ -27,9 +27,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { storage } from '../firebase';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useEffect } from 'react';
+
 
 const allowedTypes = ["video/mp4"]
-
 const drawerWidth = 240;
 
 function SideNavBar(props) {
@@ -42,8 +44,10 @@ function SideNavBar(props) {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = React.useState();
 
-    const { logout } = useContext(AuthContext);
+
+    const { logout, user } = useContext(AuthContext);
     const navigate = useNavigate();
+  
 
     const handleLogout = async () => {
         await logout();
@@ -152,9 +156,9 @@ function SideNavBar(props) {
         <div>
             <Snackbar open={!success || !error} autoHideDuration={6000}>
                 <Alert severity={
-                    success?"success":error?"error":""
+                    success ? "success" : error ? "error" : ""
                 } sx={{ width: '100%' }}>
-                    {success?success:error?error:""}
+                    {success ? success : error ? error : ""}
                 </Alert>
             </Snackbar>
             <div>
@@ -177,14 +181,14 @@ function SideNavBar(props) {
                     <ListItemButton onClick={handleProfile}>
                         <ListItemIcon>
                             {/* <AccountCircleIcon /> */}
-                            <Avatar src={props.userData.profileUrl} sx={{ width: 24, height: 24 }} />
+                            {props.userData ? <Avatar src={props.userData.profileUrl} sx={{ width: 24, height: 24 }} /> : <AccountCircleIcon />}
                         </ListItemIcon>
                         <ListItemText primary={'Profile'} />
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                     <ListItemButton component="label" disabled={loading}>
-                    <input type='file' accept='video/*' hidden onChange={handleFile} />
+                        <input type='file' accept='video/*' hidden onChange={handleFile} />
                         <ListItemIcon>
                             <MovieCreationIcon color="secondary" />
                         </ListItemIcon>

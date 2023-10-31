@@ -42,3 +42,9 @@
 .userPostsCard video{
     margin: 2px;
 }
+
+.videoBox video{
+    height: 20rem;
+    width: 20rem;
+    object-fit: cover;
+}

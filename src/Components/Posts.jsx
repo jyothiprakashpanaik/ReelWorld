@@ -74,7 +74,7 @@ function Posts({ userData }) {
                     <div className="videos" key={index}>
                         <Video postUrl={post.postUrl} ref={(ref) => (videoRefs.current[index] = ref)} currentId={index} />
                         <div className='collection' style={{ display: "flex" }}>
-                            <div className='faAvatar' onClick={() => { navigate(`/profile/${userData.userId}`) }} style={{ display: "flex", justifyContent: "flex-end", width: "100%" }} >
+                            <div className='faAvatar' onClick={() => { navigate(`/profile/${post.userId}`) }} style={{ display: "flex", justifyContent: "flex-end", width: "100%" }} >
                                 <Avatar className='avatar' src={post.userProfile} />
                                 <h4>{post.userName}</h4>
                             </div>

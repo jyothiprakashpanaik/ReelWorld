@@ -95,7 +95,7 @@ function Profile() {
                     {
                         posts.map((post, index) => (
                             <div className='videoBox' key={index}>
-                                <video className='videoContent' muted={true} controls={false} autoPlay={false} onClick={() => handleClickOpen(index)} src={post.postUrl} type="video/mp4" />
+                                <video muted={true} controls={false} autoPlay={false} onClick={() => handleClickOpen(index)} src={post.postUrl} type="video/mp4" />
                                 {open === index ?
                                     <CommentDialog handleClose={handleClose} open={open} index={index} post={post} userData={userData} />
                                     : <></>}
