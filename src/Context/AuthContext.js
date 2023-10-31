@@ -1,32 +1,34 @@
 import React, { useEffect, useState } from "react";
-import {auth} from "../firebase";
+import { auth } from "../firebase";
 
 export const AuthContext = React.createContext();
 
-export function AuthProvider({children}){
+export function AuthProvider({ children }) {
     const [user, setUser] = useState();
     const [loading, setLoading] = useState(true);
 
-    function signup(email, password){
+    function signup(email, password) {
         console.log(email, password);
-        return auth.createUserWithEmailAndPassword(email, password); 
+        return auth.createUserWithEmailAndPassword(email, password);
     }
 
-    function login(email, password){
+    function login(email, password) {
         return auth.signInWithEmailAndPassword(email, password);
     }
 
-    function logout(){
+    function logout() {
         return auth.signOut();
     }
 
-    function password_reset(email){
+    function password_reset(email) {
         return auth.sendPasswordResetEmail(email);
     }
 
-    function confirm_password_reset(oobCode, newPassword){
-        return auth.confirmPasswordReset(oobCode, newPassword);
+    function delete_account(){
+        return auth.currentUser.delete();
     }
+
+    
 
     useEffect(() => {
         const unsub = auth.onAuthStateChanged((user) => {
@@ -34,10 +36,10 @@ export function AuthProvider({children}){
             setLoading(false);
         });
 
-        return ()=>{
+        return () => {
             unsub();
         }
-    },[])
+    }, [])
 
     const store = {
         user,
@@ -45,7 +47,7 @@ export function AuthProvider({children}){
         login,
         logout,
         password_reset,
-        confirm_password_reset
+        delete_account
     }
 
     return (
