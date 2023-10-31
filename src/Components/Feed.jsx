@@ -23,18 +23,6 @@ export default function Feed() {
 
     return (
         <>
-            {/* {userData && <>
-                <Navbar userData={userData} />
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "90vh" }}>
-                    <UploadPost userData={userData} />
-                    <Posts userData={userData} />
-                </div>
-            </>
-            } */}
-
-            {/* <SideNavBar/> */}
-            {/* <Posts userData={userData} /> */}
-
             {userData && <>
                 <SideNavBar userData={userData}/>
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "90vh" }}>
