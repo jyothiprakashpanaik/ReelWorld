@@ -62,7 +62,7 @@ export default function ForgetPassword() {
                         Trouble logging in?
                         </Typography>
                         {error && <Alert severity="error">{error}</Alert>}
-                        <TextField id="outlined-basic" label="Email" type="email" margin="dense" fullWidth={true} variant="outlined" value={email} onChange={handleEmail} disabled={email}/>
+                        <TextField id="outlined-basic" label="Email" type="email" margin="dense" fullWidth={true} variant="outlined" value={email} onChange={handleEmail} disabled={loading}/>
                     </CardContent>
                     <CardActions>
                         <Button fullWidth variant="contained" color="primary" onClick={handleClick} disabled={loading}>
