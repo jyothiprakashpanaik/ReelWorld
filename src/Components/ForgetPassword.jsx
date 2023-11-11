@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState,useContext } from 'react';
+import { useState,useContext, useReducer } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { makeStyles } from '@mui/styles';
@@ -11,33 +11,29 @@ import { Link } from "react-router-dom";
 import { AuthContext } from '../Context/AuthContext';
 import reelworld from "../Assets/ReelWorld.png";
 import "../Styles/Signup.css";
+import { useStyles } from "../Styles/styles.js";
+import { emailReducer } from './utils/Reducer.jsx';
 
 export default function ForgetPassword() {
 
-    const useStyles = makeStyles({
-        text1: {
-            color: "grey",
-            textAlign: "center"
-        },
-        card2: {
-            marginTop: "2%",
-        },
-    });
 
-    const [email, setEmail] = useState();
+    const [emailState, emailDispatcher] = useReducer(emailReducer, { value: '', isValid: null, isCheck: null, helperText: '' });
     const [error, setError] = useState();
     const [loading, setLoading] = useState(false);
     const {password_reset} = useContext(AuthContext);
 
     const handleEmail = (e) => {
-        setEmail(e.target.value);
+        emailDispatcher({ value: e.target.value.trim(), type: 'EMAIL_INPUT' })
+    }
+
+    const validateEmail = (e) => {
+        emailDispatcher({ value: e.target.value.trim(), type: 'EMAIL_VALID' })
     }
 
     const handleClick = async (e) => {
         try{
             setLoading(true);
-            const userObj = await password_reset(email);
-            console.log(userObj);
+            await password_reset(emailState.value);
         }
         catch(error){
             setError(error.message);
@@ -61,10 +57,10 @@ export default function ForgetPassword() {
                         Reset your access to stay updated with the latest trends and reels!
                         </Typography>
                         {error && <Alert severity="error">{error}</Alert>}
-                        <TextField id="outlined-basic" label="Email" type="email" margin="dense" fullWidth={true} variant="outlined" value={email} onChange={handleEmail} disabled={loading}/>
+                        <TextField id="outlined-basic" label="Email" type="email" margin="dense" fullWidth={true} variant="outlined" value={emailState.value} onChange={handleEmail} onBlur={validateEmail} disabled={loading} error={emailState.isValid===false} helperText={emailState.isValid===false && emailState.helperText}/>
                     </CardContent>
                     <CardActions>
-                        <Button fullWidth variant="contained" color="primary" onClick={handleClick} disabled={loading}>
+                        <Button fullWidth variant="contained" color="primary" onClick={handleClick} disabled={loading || !emailState.isValid}>
                             Send Activation link
                         </Button>
                     </CardActions>
