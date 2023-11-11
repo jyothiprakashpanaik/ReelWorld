@@ -6,7 +6,7 @@ import { makeStyles } from '@mui/styles';
 import Typography from '@mui/material/Typography';
 import { Button, CardActions } from '@mui/material';
 import "./Signup.css";
-import insta from "../Assets/instagram-text.png";
+import reelworld from "../Assets/ReelWorld.png";
 import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
 import { Link } from "react-router-dom";
@@ -20,7 +20,6 @@ export default function ForgetPassword() {
             textAlign: "center"
         },
         card2: {
-            height: "6vh",
             marginTop: "2%",
         },
     });
@@ -56,10 +55,10 @@ export default function ForgetPassword() {
         <div className='signUpWarapper' >
             <div className='signUpCard'>
                 <Card variant="outlined">
-                    <div className='insta-logo'><img src={insta} alt='instagram-logo'></img></div>
+                    <div className='reelworld-logo'><img src={reelworld} alt='reelworld-logo'></img></div>
                     <CardContent>
                         <Typography variant="subtitle1" className={classes.text1}>
-                        Trouble logging in?
+                        Reset your access to stay updated with the latest trends and reels!
                         </Typography>
                         {error && <Alert severity="error">{error}</Alert>}
                         <TextField id="outlined-basic" label="Email" type="email" margin="dense" fullWidth={true} variant="outlined" value={email} onChange={handleEmail} disabled={loading}/>
@@ -72,7 +71,7 @@ export default function ForgetPassword() {
                 </Card>
                 <Card variant="outlined" className={classes.card2}>
                     <CardContent>
-                        <Typography variant="subtitle1" className={classes.text1}>
+                        <Typography variant="subtitle2" className={classes.text1}>
                             Having an account? <Link to="/login" style={{ textDecoration: 'none' }}>Login</Link>
                         </Typography>
                     </CardContent>

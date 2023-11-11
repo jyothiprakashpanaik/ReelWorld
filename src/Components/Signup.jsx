@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { useState, useContext } from "react";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { makeStyles } from '@mui/styles';
 import Typography from '@mui/material/Typography';
 import { Button, CardActions } from '@mui/material';
-import insta from "../Assets/instagram-text.png";
+import reelworld from "../Assets/ReelWorld.png";
 import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
@@ -15,7 +15,6 @@ import "./Signup.css";
 import { AuthContext } from '../Context/AuthContext';
 import { database, storage } from '../firebase';
 
-
 export default function SignUp() {
 
     const useStyles = makeStyles({
@@ -24,34 +23,64 @@ export default function SignUp() {
             textAlign: "center"
         },
         card2: {
-            height: "6vh",
             marginTop: "2%",
         }
     });
 
     const classes = useStyles();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
-    const [file, setFile] = useState(null);
+
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+        userName: '',
+        file: null,
+        agreed: false,
+    });
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [isFormValid, setIsFormValid] = useState({
+        isEmailValid: true,
+        isPasswordValid: true,
+        isAgreed: true,
+        isUserNameValid: true
+    });
+
     const navigate = useNavigate();
+
     const { signup } = useContext(AuthContext);
 
-    const handleEmail = (e) => {
-        setEmail(e.target.value.trim());
+
+    const handleInputChange = (e) => {
+        const { name, value, type, checked, files } = e.target;
+
+        const val = type === 'checkbox' ? checked : type === 'file' ? files[0] : value;
+        setFormData({ ...formData, [name]: val });
     }
-    const handlePassword = (e) => {
-        setPassword(e.target.value.trim());
+
+    const validateFormData = (email, password, userName, agreed) => {
+        const isEmailValid = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(email);
+        const isPasswordValid = !password.includes(' ') && password.length >= 8;
+        const isAgreed = agreed;
+        const isUserNameValid = !userName.includes(' ') && userName.length >= 3;
+
+        setIsFormValid({
+            isEmailValid: isEmailValid,
+            isPasswordValid: isPasswordValid,
+            isAgreed: isAgreed,
+            isUserNameValid: isUserNameValid
+        });
+        return (isEmailValid && isPasswordValid && isAgreed && isUserNameValid);
     }
-    const handleName = (e) => {
-        setName(e.target.value.trim());
-    }
-    const handleFile = (e) => {
-        setFile(e.target.files[0]);
-    }
+
+
     const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const { email, password, userName, agreed, file } = formData;
+
+        if (!validateFormData(email, password, userName, agreed)) {
+            return;
+        }
 
         try {
             setError('');
@@ -63,7 +92,7 @@ export default function SignUp() {
 
             function fn1(snapshot) {
                 let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log("Progress",progress);
+                console.log("Progress", progress);
             }
             function fn2(error) {
                 console.log("Error", error);
@@ -75,15 +104,15 @@ export default function SignUp() {
             }
             function fn3() {
                 uploadTask.snapshot.ref.getDownloadURL().then((url) => {
-                    console.log("URL",url);
+                    console.log("URL", url);
                     database.users.doc(uid).set({
                         email: email,
                         userId: uid,
-                        fullname: name,
+                        fullname: userName,
                         profileUrl: url,
                         createdAt: database.getTimeStamp
                     })
-                })
+                });
                 setLoading(false);
                 navigate("/");
             }
@@ -98,30 +127,35 @@ export default function SignUp() {
         }
     }
 
+
     return (
         <div className='signUpWarapper' >
             <div className='signUpCard'>
-                <Card variant="outlined">
-                    <div className='insta-logo'><img src={insta} alt='instagram-logo'></img></div>
+                <Card variant="outlined" component="form" method='POST' onSubmit={handleSubmit}>
+                    <div className='reelworld-logo'><img src={reelworld} alt='reelworld-logo'></img></div>
 
                     <CardContent>
                         <Typography variant="subtitle1" className={classes.text1}>
-                            Sign up to see trenging photos and reels.
+                        Join us to discover the newest trends and reels.
                         </Typography>
                         {error && <Alert severity="error">{error}</Alert>}
 
-                        <TextField id="outlined-basic" label="Email" type="email" margin="dense" fullWidth={true} variant="outlined" onChange={handleEmail} value={email} required />
-                        <TextField id="outlined-basic" label="Password" type="password" margin="dense" fullWidth={true} variant="outlined" onChange={handlePassword} value={password} required />
-                        <TextField id="outlined-basic" label="Full Name" margin="dense" fullWidth={true} variant="outlined" onChange={handleName} value={name} required />
+                        <TextField id="outlined-basic" label="Email" name="email" type="email" margin="dense" fullWidth={true} variant="outlined" onChange={handleInputChange} value={formData.email} required error={!isFormValid.isEmailValid} />
+                        <TextField id="outlined-basic" label="Password" name="password" type="password" margin="dense" fullWidth={true} variant="outlined" onChange={handleInputChange} value={formData.password} required error={!isFormValid.isPasswordValid} helperText={!isFormValid.isPasswordValid && "Password legnth should be greater than or equal to 8"} />
+                        <TextField id="outlined-basic" label="User Name" name="userName" margin="dense" fullWidth={true} variant="outlined" onChange={handleInputChange} value={formData.userName} required error={!isFormValid.isUserNameValid} helperText={!isFormValid.isUserNameValid && "username legnth should be greater than or equal to 3"} />
                         <Button component="label" color="secondary" fullWidth={true} variant='outlined' margin="dense" startIcon={<CloudUploadIcon />}>
                             Upload Profile Image
-                            <input type="file" accept='image/*' onChange={handleFile} hidden />
+                            <input name='file' type="file" accept='image/*' onChange={handleInputChange} hidden />
                         </Button>
-                        <span>{file && file.name}</span>
+                        <span>{!!formData.file && formData.file.name}</span>
                         <div className='termsAndConditionsBlock'>
                             <Checkbox
                                 inputProps={{ 'aria-label': 'controlled' }}
-                                required />
+                                type="checkbox" name="agreed"
+                                onChange={handleInputChange}
+                                required
+                                error={!isFormValid.isAgreed}
+                            />
                             <Typography variant="caption">
                                 I Agree all the Terms, Conditions and Cookies policy.
                             </Typography>
@@ -129,7 +163,7 @@ export default function SignUp() {
 
                     </CardContent>
                     <CardActions>
-                        <Button fullWidth variant="contained" color="primary" type="submit" onClick={handleSubmit} disabled={loading}>
+                        <Button fullWidth variant="contained" color="primary" type="submit" disabled={!isFormValid || loading}>
                             SignUp
                         </Button>
                     </CardActions>
@@ -137,13 +171,12 @@ export default function SignUp() {
                 </Card>
                 <Card variant="outlined" className={classes.card2}>
                     <CardContent>
-                        <Typography variant="subtitle1" className={classes.text1}>
+                        <Typography variant="subtitle2" className={classes.text1}>
                             Having an account? <Link to="/login" style={{ textDecoration: 'none' }}>Login</Link>
                         </Typography>
                     </CardContent>
                 </Card>
             </div>
-
         </div >
     );
 }

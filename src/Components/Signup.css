@@ -8,12 +8,17 @@
     margin-top: 3%;
 }
 
-.insta-logo{
+.reelworld-logo{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     margin-top: 3%;
+}
+.reelworld-logo img{
+    width: 75%;
+    height: 75%;
+    object-fit: cover;
 }
 
 .termsAndConditionsBlock{
@@ -26,8 +31,5 @@
 @media only screen and (max-width: 620px){
     .signUpCard{
         width: 60%;
-    }
-    .insta-logo img{
-        width: 35%;
     }
 }

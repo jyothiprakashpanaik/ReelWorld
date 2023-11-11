@@ -10,8 +10,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { CarouselProvider, Slider, Slide, Image } from 'pure-react-carousel';
 import image1 from "../Assets/screenshot1.png";
 import image2 from "../Assets/screenshot2.png";
-import image3 from "../Assets/screenshot4.png";
-import insta from "../Assets/instagram-text.png";
+import image3 from "../Assets/screenshot3.png";
+import image4 from "../Assets/screenshot4.png";
+import reelworld from "../Assets/ReelWorld.png";
 import backgroundImage from "../Assets/home-phones.png";
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import "./Login.css";
@@ -24,10 +25,10 @@ export default function LogIn() {
     const useStyles = makeStyles({
         text1: {
             color: "grey",
-            textAlign: "center"
+            textAlign: "center",
+            textWrap: "balance"
         },
         card2: {
-            height: "6vh",
             marginTop: "2%",
         }
     });
@@ -49,16 +50,16 @@ export default function LogIn() {
         setPassword(e.target.value.trim());
     }
     const handleSubmit = async (e) => {
-        try{
+        try {
             setError('');
             setLoading(true);
             const userObj = await login(email, password);
             setLoading(false);
             navigate("/");
         }
-        catch(error){
+        catch (error) {
             setError(error.message);
-            setTimeout(()=>{
+            setTimeout(() => {
                 setError("");
             }, 5000);
             setLoading(false);
@@ -73,16 +74,17 @@ export default function LogIn() {
                     <CarouselProvider
                         naturalSlideWidth={234}
                         naturalSlideHeight={508}
-                        totalSlides={3}
+                        totalSlides={4}
                         isPlaying={true}
                         infinite={true}
                         visibleSlides={1}
                         hasMasterSpinner={true}
                     >
                         <Slider>
-                            <Slide index={0}><Image src={image1}/></Slide>
-                            <Slide index={1}><Image src={image2}/></Slide>
-                            <Slide index={2}><Image src={image3}/></Slide>
+                            <Slide index={0}><Image src={image1} /></Slide>
+                            <Slide index={1}><Image src={image2} /></Slide>
+                            <Slide index={2}><Image src={image3} /></Slide>
+                            <Slide index={3}><Image src={image4} /></Slide>
                         </Slider>
 
                     </CarouselProvider>
@@ -90,14 +92,14 @@ export default function LogIn() {
             </div>
             <div className='logInCard'>
                 <Card variant="outlined">
-                    <div className='insta-logo'><img src={insta} alt='instagram-logo'></img></div>
+                    <div className='reelworld-logo'><img src={reelworld} alt='reelworld-logo'></img></div>
                     <CardContent>
                         <Typography variant="subtitle1" className={classes.text1}>
-                            Login to see trenging photos and reels.
+                            Explore the latest trends and reels by logging in.
                         </Typography>
                         {error && <Alert severity="error">{error}</Alert>}
-                        <TextField id="outlined-basic" label="Email" type="email" margin="dense" fullWidth={true} variant="outlined" value={email} onChange={handleEmail}/>
-                        <TextField id="outlined-basic" label="Password" type="password" margin="dense" fullWidth={true} variant="outlined" value={password} onChange={handlePassword}/>
+                        <TextField id="outlined-basic" label="Email" type="email" margin="dense" fullWidth={true} variant="outlined" value={email} onChange={handleEmail} />
+                        <TextField id="outlined-basic" label="Password" type="password" margin="dense" fullWidth={true} variant="outlined" value={password} onChange={handlePassword} />
                     </CardContent>
                     <CardActions>
                         <Button fullWidth variant="contained" color="primary" onClick={handleSubmit} disabled={loading}>
@@ -105,14 +107,14 @@ export default function LogIn() {
                         </Button>
                     </CardActions>
                     <CardContent className='forgetPassword'>
-                        <Typography variant="caption">
+                        <Typography variant="subtitle2">
                             <Link to="/forgetpassword" style={{ textDecoration: 'none' }}>Forgot password?</Link>
                         </Typography>
                     </CardContent>
                 </Card>
                 <Card variant="outlined" className={classes.card2}>
                     <CardContent>
-                        <Typography variant="subtitle1" className={classes.text1}>
+                        <Typography variant="subtitle2" className={classes.text1}>
                             Don't have an account? <Link to="/signup" style={{ textDecoration: 'none' }}>Signup</Link>
                         </Typography>
                     </CardContent>
