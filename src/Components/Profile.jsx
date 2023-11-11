@@ -71,9 +71,6 @@ function Profile() {
 
     return (
         <div>
-            {!userData ? <CircularProgress /> :
-                <SideNavBar userData={userData} />
-            }
             <div className='spacer'></div>
             <div className='container'>
                 {userData && <div className='userCard'>

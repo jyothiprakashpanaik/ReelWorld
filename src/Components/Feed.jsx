@@ -1,35 +1,14 @@
-import React, { useState, useContext, useEffect } from "react";
-import { AuthContext } from "../Context/AuthContext";
+import React from "react";
 import UploadPost from "./UploadPost";
 import Posts from "./Posts";
-import { database } from "../firebase";
-import Navbar from "./Navbar";
-import SideNavBar from "./SideNavBar";
 
-
-export default function Feed() {
-
-    const [userData, setUserData] = useState();
-    const { user } = useContext(AuthContext);
-
-
-    useEffect(() => {
-        console.log("running use effect")
-        const unsub = database.users.doc(user.uid).onSnapshot((snapshot) => {
-            setUserData(snapshot.data());
-        })
-        return () => { unsub(); }
-    }, []);
+export default function Feed({userData}) {
 
     return (
         <>
-            {userData && <>
-                <SideNavBar userData={userData}/>
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "90vh" }}>
-                    <UploadPost userData={userData} />
-                    <Posts userData={userData} />
-                </div>
-            </>
-            }
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "90vh" }}>
+                <UploadPost userData={userData} />
+                <Posts userData={userData} />
+            </div>
         </>);
 }
