@@ -7,7 +7,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import insta from "../Assets/instagram-text.png";
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import HomeIcon from '@mui/icons-material/Home';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -28,8 +27,7 @@ import { storage } from '../firebase';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { useEffect } from 'react';
-
+import reelworld from "../Assets/ReelWorld.png";
 
 const allowedTypes = ["video/mp4"]
 const drawerWidth = 240;
@@ -45,7 +43,7 @@ function SideNavBar(props) {
     const [success, setSuccess] = React.useState();
 
 
-    const { logout, user } = useContext(AuthContext);
+    const { logout } = useContext(AuthContext);
     const navigate = useNavigate();
   
 
@@ -164,7 +162,7 @@ function SideNavBar(props) {
             <div>
                 <Toolbar >
                     <div className=''>
-                        <img src={insta} style={{ height: "5vh", width: "100%", cursor: "pointer" }}></img>
+                        <img src={reelworld} style={{ height: "5vh", width: "100%", cursor: "pointer" }}></img>
                     </div>
                 </Toolbar>
             </div>
