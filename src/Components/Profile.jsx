@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { database } from '../firebase';
-import { CircularProgress, Typography } from '@mui/material';
-import "./Profile.css";
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 import CommentDialog from './CommentDialog';
-import SideNavBar from './SideNavBar';
+import { database } from '../firebase';
+import "../Styles/Profile.css";
 
 
 function Profile() {

@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useState, useImperativeHandle } from 'react'
-import "./Video.css";
 import ReactDOM from 'react-dom';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import LinearProgress from '@mui/material/LinearProgress';
+import "../Styles/Video.css";
 
 let userPaused = false;
 

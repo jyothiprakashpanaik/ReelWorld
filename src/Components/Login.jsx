@@ -15,7 +15,7 @@ import image4 from "../Assets/screenshot4.png";
 import reelworld from "../Assets/ReelWorld.png";
 import backgroundImage from "../Assets/home-phones.png";
 import 'pure-react-carousel/dist/react-carousel.es.css';
-import "./Login.css";
+import "../Styles/Login.css";
 import { useState, useContext } from "react";
 import { AuthContext } from '../Context/AuthContext';
 

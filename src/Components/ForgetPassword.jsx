@@ -5,12 +5,12 @@ import CardContent from '@mui/material/CardContent';
 import { makeStyles } from '@mui/styles';
 import Typography from '@mui/material/Typography';
 import { Button, CardActions } from '@mui/material';
-import "./Signup.css";
-import reelworld from "../Assets/ReelWorld.png";
 import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
 import { Link } from "react-router-dom";
 import { AuthContext } from '../Context/AuthContext';
+import reelworld from "../Assets/ReelWorld.png";
+import "../Styles/Signup.css";
 
 export default function ForgetPassword() {
 

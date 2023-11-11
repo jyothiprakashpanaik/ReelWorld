@@ -11,9 +11,9 @@ import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import { Link, useNavigate } from "react-router-dom";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import "./Signup.css";
 import { AuthContext } from '../Context/AuthContext';
 import { database, storage } from '../firebase';
+import "../Styles/Signup.css";
 
 export default function SignUp() {
 
@@ -136,7 +136,7 @@ export default function SignUp() {
 
                     <CardContent>
                         <Typography variant="subtitle1" className={classes.text1}>
-                        Join us to discover the newest trends and reels.
+                            Join us to discover the newest trends and reels.
                         </Typography>
                         {error && <Alert severity="error">{error}</Alert>}
 

@@ -5,9 +5,9 @@ import Avatar from '@mui/material/Avatar';
 import CommentIcon from '@mui/icons-material/Comment';
 import Like from './Like';
 import Video from './Video';
-import "./Posts.css";
 import { useNavigate } from 'react-router-dom';
 import CommentDialog from './CommentDialog';
+import "../Styles/Posts.css";
 
 
 
@@ -80,7 +80,6 @@ function Posts({ userData }) {
                             </div>
                             <div className='likeAndComment'>
                                 <Like postData={post} userDetails={userData} />
-                                
                                 <CommentIcon className='commentIcon' onClick={() => handleClickOpen(index)} />
                                 {/* {userData.userId === post.userId && <DeleteIcon style={{ color: "white" }} onClick={() => handleDelete(post.postId)} />} */}
                             </div>
