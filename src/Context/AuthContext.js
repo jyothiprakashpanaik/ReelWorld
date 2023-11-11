@@ -24,11 +24,9 @@ export function AuthProvider({ children }) {
         return auth.sendPasswordResetEmail(email);
     }
 
-    function delete_account(){
+    function delete_account() {
         return auth.currentUser.delete();
     }
-
-    
 
     useEffect(() => {
         const unsub = auth.onAuthStateChanged((user) => {
@@ -55,6 +53,4 @@ export function AuthProvider({ children }) {
             {!loading && children}
         </AuthContext.Provider>
     )
-
-
 }
