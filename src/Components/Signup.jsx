@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { useState, useContext } from "react";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { makeStyles } from '@mui/styles';
 import Typography from '@mui/material/Typography';
 import { Button, CardActions } from '@mui/material';
 import reelworld from "../Assets/ReelWorld.png";
@@ -13,81 +12,40 @@ import { Link, useNavigate } from "react-router-dom";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { AuthContext } from '../Context/AuthContext';
 import { database, storage } from '../firebase';
+import { useStyles } from "../Styles/styles.js";
+import { emailReducer, passwordReducer, userNameReducer, fileReducer } from './utils/Reducer.jsx';
 import "../Styles/Signup.css";
+
 
 export default function SignUp() {
 
-    const useStyles = makeStyles({
-        text1: {
-            color: "grey",
-            textAlign: "center"
-        },
-        card2: {
-            marginTop: "2%",
-        }
-    });
-
     const classes = useStyles();
 
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-        userName: '',
-        file: null,
-        agreed: false,
-    });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [isFormValid, setIsFormValid] = useState({
-        isEmailValid: true,
-        isPasswordValid: true,
-        isAgreed: true,
-        isUserNameValid: true
-    });
+    const [formDataIsValid, setFormDataIsValid] = useState(false);
+    const [agree, setAgree] = useState(false);
 
     const navigate = useNavigate();
 
     const { signup } = useContext(AuthContext);
 
-
-    const handleInputChange = (e) => {
-        const { name, value, type, checked, files } = e.target;
-
-        const val = type === 'checkbox' ? checked : type === 'file' ? files[0] : value;
-        setFormData({ ...formData, [name]: val });
-    }
-
-    const validateFormData = (email, password, userName, agreed) => {
-        const isEmailValid = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(email);
-        const isPasswordValid = !password.includes(' ') && password.length >= 8;
-        const isAgreed = agreed;
-        const isUserNameValid = !userName.includes(' ') && userName.length >= 3;
-
-        setIsFormValid({
-            isEmailValid: isEmailValid,
-            isPasswordValid: isPasswordValid,
-            isAgreed: isAgreed,
-            isUserNameValid: isUserNameValid
-        });
-        return (isEmailValid && isPasswordValid && isAgreed && isUserNameValid);
-    }
+    const [emailState, emailDispatcher] = useReducer(emailReducer, { value: '', isValid: null, isCheck: null, helperText: '' });
+    const [passwordState, passwordDispatcher] = useReducer(passwordReducer, { value: '', isValid: null, isCheck: null, helperText: '' });
+    const [userNameState, userNameDispatcher] = useReducer(userNameReducer, { value: '', isValid: null, isCheck: null, helperText: '' });
+    const [fileState, fileDispatcher] = useReducer(fileReducer, { value: '' });
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const { email, password, userName, agreed, file } = formData;
-
-        if (!validateFormData(email, password, userName, agreed)) {
-            return;
-        }
-
         try {
             setError('');
-            setLoading(true)
-            const userObj = await signup(email, password);
+            setLoading(true);
+            const userObj = await signup(emailState.value, passwordState.value);
             const uid = userObj.user.uid;
-            const uploadTask = storage.ref(`/users/${uid}/ProfileImage`).put(file);
+
+            const uploadTask = storage.ref(`/users/${uid}/ProfileImage`).put(fileState.value);
             uploadTask.on('state_changed', fn1, fn2, fn3);
 
             function fn1(snapshot) {
@@ -106,13 +64,13 @@ export default function SignUp() {
                 uploadTask.snapshot.ref.getDownloadURL().then((url) => {
                     console.log("URL", url);
                     database.users.doc(uid).set({
-                        email: email,
+                        email: emailState.value,
                         userId: uid,
-                        fullname: userName,
+                        userName: userNameState.value,
                         profileUrl: url,
                         createdAt: database.getTimeStamp
-                    })
-                });
+                    });
+                })
                 setLoading(false);
                 navigate("/");
             }
@@ -123,10 +81,60 @@ export default function SignUp() {
             setTimeout(() => {
                 setError('');
             }, 5000);
-
         }
     }
 
+    const handleEmail = (e) => {
+        emailDispatcher({ value: e.target.value.trim(), type: 'EMAIL_INPUT' })
+    }
+
+    const validateEmail = (e) => {
+        database.users.where("email", "==", emailState.value).get()
+            .then((querySnapshot) => {
+                emailDispatcher({ count: querySnapshot.size, value: e.target.value.trim(), type: 'EMAIL_CHECK' })
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
+
+    const handlePassword = (e) => {
+        passwordDispatcher({ value: e.target.value.trim(), type: 'PASSWORD_INPUT' })
+    }
+
+    const validatePassword = (e) => {
+        passwordDispatcher({ value: e.target.value.trim(), type: 'PASSWORD_VALID' })
+    }
+
+    const handleUserName = (e) => {
+        userNameDispatcher({ value: e.target.value.trim().toLowerCase(), type: 'USERNAME_INPUT' })
+    }
+
+    const validateUserName = (e) => {
+        database.users.where("userName", "==", userNameState.value).get()
+            .then((querySnapshot) => {
+                userNameDispatcher({ count: querySnapshot.size, value: e.target.value.trim(), type: 'USERNAME_CHECK' })
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
+
+    const handleFile = (e) => {
+        fileDispatcher({ value: e.target.files[0], type: 'FILE_INPUT' })
+    }
+
+    const handleAgree = () => {
+        setAgree(prev => !prev);
+    }
+
+    useEffect(() => {
+        let timerId = setTimeout(() => {
+            setFormDataIsValid(emailState.isValid && passwordState.isValid && userNameState.isValid && agree)
+        }, 500);
+
+        return () => {
+            clearTimeout(timerId);
+        }
+    }, [emailState.isValid, passwordState.isValid, userNameState.isValid, agree]);
 
     return (
         <div className='signUpWarapper' >
@@ -140,21 +148,21 @@ export default function SignUp() {
                         </Typography>
                         {error && <Alert severity="error">{error}</Alert>}
 
-                        <TextField id="outlined-basic" label="Email" name="email" type="email" margin="dense" fullWidth={true} variant="outlined" onChange={handleInputChange} value={formData.email} required error={!isFormValid.isEmailValid} />
-                        <TextField id="outlined-basic" label="Password" name="password" type="password" margin="dense" fullWidth={true} variant="outlined" onChange={handleInputChange} value={formData.password} required error={!isFormValid.isPasswordValid} helperText={!isFormValid.isPasswordValid && "Password legnth should be greater than or equal to 8"} />
-                        <TextField id="outlined-basic" label="User Name" name="userName" margin="dense" fullWidth={true} variant="outlined" onChange={handleInputChange} value={formData.userName} required error={!isFormValid.isUserNameValid} helperText={!isFormValid.isUserNameValid && "username legnth should be greater than or equal to 3"} />
+                        <TextField id="outlined-basic" label="Email" name="email" type="email" margin="dense" fullWidth={true} value={emailState.value} error={emailState.isValid === false} variant="outlined" required helperText={emailState.isValid === false && emailState.helperText} onChange={handleEmail} onBlur={validateEmail} />
+                        <TextField id="outlined-basic" label="Password" name="password" type="password" margin="dense" fullWidth={true} variant="outlined" error={passwordState.isValid === false} required value={passwordState.value} helperText={passwordState.isValid === false && passwordState.helperText} onChange={handlePassword} onBlur={validatePassword} />
+                        <TextField id="outlined-basic" label="User Name" name="userName" margin="dense" fullWidth={true} variant="outlined" required error={userNameState.isValid === false} helperText={userNameState.isValid === false && userNameState.helperText} value={userNameState.value} onChange={handleUserName} onBlur={validateUserName} />
                         <Button component="label" color="secondary" fullWidth={true} variant='outlined' margin="dense" startIcon={<CloudUploadIcon />}>
                             Upload Profile Image
-                            <input name='file' type="file" accept='image/*' onChange={handleInputChange} hidden />
+                            <input name='file' type="file" accept='image/*' onChange={handleFile} hidden />
                         </Button>
-                        <span>{!!formData.file && formData.file.name}</span>
+                        <span>{!!fileState.value && fileState.value.name}</span>
                         <div className='termsAndConditionsBlock'>
                             <Checkbox
                                 inputProps={{ 'aria-label': 'controlled' }}
                                 type="checkbox" name="agreed"
-                                onChange={handleInputChange}
                                 required
-                                error={!isFormValid.isAgreed}
+                                value={agree}
+                                onChange={handleAgree}
                             />
                             <Typography variant="caption">
                                 I Agree all the Terms, Conditions and Cookies policy.
@@ -163,7 +171,7 @@ export default function SignUp() {
 
                     </CardContent>
                     <CardActions>
-                        <Button fullWidth variant="contained" color="primary" type="submit" disabled={!isFormValid || loading}>
+                        <Button fullWidth variant="contained" color="primary" type="submit" disabled={loading || !formDataIsValid}>
                             SignUp
                         </Button>
                     </CardActions>
