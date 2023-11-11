@@ -16,25 +16,16 @@ import reelworld from "../Assets/ReelWorld.png";
 import backgroundImage from "../Assets/home-phones.png";
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import "../Styles/Login.css";
-import { useState, useContext } from "react";
+import { useState, useContext, useReducer, useEffect } from "react";
 import { AuthContext } from '../Context/AuthContext';
-
+import { useStyles } from "../Styles/styles.js";
+import { emailReducer, passwordReducer } from './utils/Reducer.jsx';
 
 export default function LogIn() {
 
-    const useStyles = makeStyles({
-        text1: {
-            color: "grey",
-            textAlign: "center",
-            textWrap: "balance"
-        },
-        card2: {
-            marginTop: "2%",
-        }
-    });
-
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [emailState, emailDispatcher] = useReducer(emailReducer, { value: '', isValid: null, isCheck: null, helperText: '' });
+    const [passwordState, passwordDispatcher] = useReducer(passwordReducer, { value: '', isValid: null, isCheck: null, helperText: '' });
+    const [formDataIsValid, setFormDataIsValid] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -42,18 +33,27 @@ export default function LogIn() {
 
     const classes = useStyles();
 
-
     const handleEmail = (e) => {
-        setEmail(e.target.value.trim());
+        emailDispatcher({ value: e.target.value.trim(), type: 'EMAIL_INPUT' })
     }
+
+    const validateEmail = (e) => {
+        emailDispatcher({ value: e.target.value.trim(), type: 'EMAIL_VALID' })
+    }
+
     const handlePassword = (e) => {
-        setPassword(e.target.value.trim());
+        passwordDispatcher({ value: e.target.value.trim(), type: 'PASSWORD_INPUT' })
     }
+
+    const validatePassword = (e) => {
+        passwordDispatcher({ value: e.target.value.trim(), type: 'PASSWORD_VALID' })
+    }
+
     const handleSubmit = async (e) => {
         try {
             setError('');
             setLoading(true);
-            const userObj = await login(email, password);
+            const userObj = await login(emailState.value, passwordState.value);
             setLoading(false);
             navigate("/");
         }
@@ -65,6 +65,16 @@ export default function LogIn() {
             setLoading(false);
         }
     }
+
+    useEffect(() => {
+        let timerId = setTimeout(() => {
+            setFormDataIsValid(emailState.isValid && passwordState.isValid)
+        }, 500);
+
+        return () => {
+            clearTimeout(timerId);
+        }
+    }, [emailState.isValid, passwordState.isValid])
 
 
     return (
@@ -98,11 +108,11 @@ export default function LogIn() {
                             Explore the latest trends and reels by logging in.
                         </Typography>
                         {error && <Alert severity="error">{error}</Alert>}
-                        <TextField id="outlined-basic" label="Email" type="email" margin="dense" fullWidth={true} variant="outlined" value={email} onChange={handleEmail} />
-                        <TextField id="outlined-basic" label="Password" type="password" margin="dense" fullWidth={true} variant="outlined" value={password} onChange={handlePassword} />
+                        <TextField id="outlined-basic" label="Email" type="email" margin="dense" fullWidth={true} variant="outlined" value={emailState.value} onChange={handleEmail} onBlur={validateEmail} error={emailState.isValid===false} helperText={emailState.isValid===false && emailState.helperText} />
+                        <TextField id="outlined-basic" label="Password" type="password" margin="dense" fullWidth={true} variant="outlined" value={passwordState.value} onChange={handlePassword} onBlur={validatePassword} error={passwordState.isValid===false} helperText={passwordState.isValid===false && passwordState.helperText}/>
                     </CardContent>
                     <CardActions>
-                        <Button fullWidth variant="contained" color="primary" onClick={handleSubmit} disabled={loading}>
+                        <Button fullWidth variant="contained" color="primary" onClick={handleSubmit} disabled={loading || !formDataIsValid}>
                             Login
                         </Button>
                     </CardActions>
