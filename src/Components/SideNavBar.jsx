@@ -162,7 +162,7 @@ function SideNavBar(props) {
             <div>
                 <Toolbar >
                     <div className=''>
-                        <img src={reelworld} style={{ height: "5vh", width: "100%", cursor: "pointer" }}></img>
+                        <img src={reelworld} style={{ height: "75%", width: "75%", objectFit:"cover", cursor: "pointer" }}></img>
                     </div>
                 </Toolbar>
             </div>
